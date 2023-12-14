@@ -1,0 +1,58 @@
+﻿@model List<ROPData>
+<table id="myTable" class="table table-hover bg-darken-4">
+    <thead>
+        <tr class="bg-dark bg-lighten-1 white">
+            <th>วัตถุดิบ</th>
+            <th>สถานที่</th>
+            <th>ROP</th>
+            <th>ยอดใช้/กะ</th>
+            <th>Max</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.material_name</td>
+                <td>
+                    <div class="badge badge-pill badge-glow badge-info badge-square">
+                        @item.location_name
+                    </div>
+                </td>
+
+                @if (item.is_rop)
+                {
+                    <td>@item.rop.ToString("#,0")</td>
+                    <td>@item.usge_qty.ToString("#,0")</td>
+                    <td>@item.max_qty.ToString("#,0")</td>
+                }
+                else
+                {
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                }
+
+                <td>
+                    <a asp-action="FormROP" asp-controller="ROP" title="แก้ไข" asp-route-id="@item.id"
+                    class="info edit mr-1">
+                        <i class="la la-pencil"></i>
+                    </a>
+                    <a class="danger delete mr-1" title="ลบข้อมูล"
+                    onclick="DeleteROP('@item.id',  '@String.Format("{0},{1}",item.material_name, item.location_name)')">
+                        <i class="la la-trash-o"></i>
+                    </a>
+
+                    @if (item.is_rop)
+                    {
+                        <a class="success mr-1" title="เพิ่มการลงวัตถุดิบ"
+                    onclick="Mapping('@item.id','@item.location_id', '@item.location_name')">
+                            <i class="la la-cart-arrow-down"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

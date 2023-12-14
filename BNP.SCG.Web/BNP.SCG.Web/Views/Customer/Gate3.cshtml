@@ -1,0 +1,208 @@
+﻿@model Customer
+@{
+
+}
+<style>
+    .card-body {
+        padding: 1rem;
+    }
+</style>
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <fieldset>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="txtScan" placeholder="สแกน QR Code เพื่อเปิดประตู 3">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info white" type="button" onclick="getDataQR();">ประตู 3</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <p class="text-danger text-center font-medium-3" id="err">@(Model == null ? "" : Model.error_message)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Basic form layout section start -->
+            <section id="frmCustomer" style="display:none">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card border-dark    ">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form class="form" method="post" id="customerForm">
+                                         <input type="hidden" asp-for="id" />
+                                        <input type="hidden" asp-for="uniq_data" />
+                                        <div class="form-body">
+                                            @*<h4 class="form-section teal text-bold-300">     <i class="ft-chevrons-down"></i> ชั่งหนัก</h4>*@
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 label-control" for="projectinput1">ทะเบียนรถ </label>
+                                                        <div class="controls col-md-10 mx-auto">
+                                                            <input type="text" asp-for="car_license" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 label-control" for="projectinput1">ชื่อ-นามสกุล</label>
+                                                        <div class="controls col-md-10 mx-auto">
+                                                            <input type="text" asp-for="name" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 label-control" for="projectinput1">เบอร์โทรศัพท์</label>
+                                                        <div class="controls col-md-10 mx-auto">
+                                                            <input type="text" asp-for="phone" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                 <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-2 label-control" for="projectinput1">สถานะ</label>
+                                                        <div class="controls col-md-4 ">
+                                                            <h3 class="teal text-bold-600" id="">เปิด - ปิดประตู</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.select2-size-sm').select2({
+                dropdownAutoWidth: true,
+                width: '100%',
+                containerCssClass: 'select-sm'
+            });
+
+            $("#txtScan").on("keydown", function (event) {
+                if (event.which == 13)
+                    getDataQR();
+            });
+
+            $('#weight_in').keyup(function () {
+                $('#weight_diff').val($(this).val() - $('#weight_out').val());
+            });
+
+            $("#myForm").submit(function (event) {
+                event.preventDefault();
+                $("#supplier_name").val($("#supplier_id option:selected").text());
+                $("#doc_status").val($("#doc_status_text").html());
+                this.submit();
+            });
+            if ($("#id").val() > 0) {
+                $("#frmWeightIN").show();
+                $("#doc_status_text").html($("#doc_status").val());
+            }
+            $("#txtScan").select();
+
+
+        });
+
+
+        function getDataQR() {
+            var _data = $("#txtScan").val();
+            if (_data == "") {
+                toastr.error("กรุณากรอกข้อมูล !!");
+                $("#txtScan").select();
+                return false;
+            }
+
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("getDataByQR", "Customer")",
+                data: { qr: _data },
+                success: function (data) {
+                    if (data.status == "success") {
+
+                        var _data = data.model;
+                        $("#err").html("");
+                        $("#car_license").val(_data.car_license);
+                        $("#name").val(_data.name);
+                        $("#phone").val(_data.phone);
+
+                        $("#frmCustomer").show();
+                        OpenGate("gate3", "SCAN_GATE_3", null, _data.id);
+
+                    } else {
+                        $("#txtScan").select();
+                        $("#car_license").val("");
+                        $("#id").val("");
+                        $("#name").val("");
+                        $("#phone").html("");
+                        $("#frmCustomer").hide();
+                        toastr.error(`${data.message}`);
+
+                    }
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function (data) {
+
+                }
+            });
+        }
+
+        function OpenGate(_gate_name, _process, _fulfill_id, _customer_id) {
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("OpenGate", "Customer")",
+                data: { gate_name: _gate_name, process: _process, fulfill_id: _fulfill_id, customer_id: _customer_id },
+                success: function (data) {
+                    _x = setInterval(function () {
+                            location.reload()
+                    }, 5000);
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function (data) {
+
+                }
+            });
+        }
+
+        function upDateDiff() {
+            var weightIn = $("#weight_in").val();
+            var weightOut = $("#weight_out").val();
+
+            let _cal = parseFloat(weightIn) - parseFloat(weightOut);
+            $('#weight_diff').val(_cal);
+
+        }
+    </script>
+}

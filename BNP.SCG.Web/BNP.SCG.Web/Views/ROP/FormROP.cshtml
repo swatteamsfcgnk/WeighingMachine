@@ -1,0 +1,187 @@
+﻿@model BNP.SCG.Web.Models.ROPData
+
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post">
+                                        <input type="hidden" asp-for="material_name" />
+                                        <input type="hidden" asp-for="location_name" />
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="ft-MaterialType"></i>
+                                                ข้อมูลการลงวัตถุดิบ
+                                            </h4>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>วัตถุดิบ <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <select asp-for="material_id"
+                                                                    class="select2-size-lg form-control mb-1 rm"
+                                                                    data-validation-required-message="กรุณาเลือกวัตถุดิบ"
+                                                                    aria-invalid="true">
+                                                                <option value="">เลือกวัตถุดิบ</option>
+                                                                @foreach (var item in ViewBag.MaterialData)
+                                                                {
+                                                                    <option value="@item.id">@item.name</option>
+                                                                }
+                                                            </select>
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>สถานที่ <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <select asp-for="location_id"
+                                                                    class="select2-size-lg form-control mb-1"
+                                                                    data-validation-required-message="กรุณาเลือกสถานที่"
+                                                                    aria-invalid="true">
+                                                                <option value="">เลือกสถานที่</option>
+                                                                @foreach (var item in ViewBag.LocationData)
+                                                                {
+                                                                    <option value="@item.id">@item.name</option>
+                                                                }
+                                                            </select>
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @{
+                                                <div id="ropOption" @(Model.is_rop == false ? "hidden" : "")>
+                                                    <div class="form-group">
+                                                        <label>ROP <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="rop" type="number" class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>ยอดใช้ <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="usge_qty" type="number"
+                                                                   class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>กะการทำงาน <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="shift" type="number" class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>
+                                                            ปริมาณสูงสุดในการบรรจุ (Max) <span class="required">*</span>
+                                                        </label>
+                                                        <div class="controls">
+                                                            <input asp-for="max_qty" type="number" class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="form-group">
+                                                <label>หมายเหตุ </label>
+                                                <div class="controls">
+                                                    <textarea asp-for="remark" type="text" class="form-control mb-1">
+                                                   </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="la la-check-square-o"></i> บันทึก
+                                            </button>
+                                            <a asp-action="Index" asp-controller="ROP" class="btn btn-danger mr-1">
+                                                <i class="ft-x"></i> ยกเลิก
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+
+    @foreach (var item in ViewBag.MaterialData)
+    {
+        <input id="isRop_@item.id" value="|@item.is_rop" readonly hidden>
+    }
+
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+
+            $('.select2-size-lg').select2({
+                dropdownAutoWidth: true,
+                width: '100%',
+                containerCssClass: 'select-lg'
+            });
+
+            let _id = "@Model.id";
+            if (_id != "0") {
+                $("#material_id").prop("disabled", true);
+                $("#location_id").prop("disabled", true);
+            } else {
+                $("#material_id").prop("disabled", false);
+                $("#location_id").prop("disabled", false);
+            }
+
+            $("#myForm").submit(function (event) {
+                event.preventDefault();
+
+                $("#material_name").val($("#material_id option:selected").text());
+                $("#location_name").val($("#location_id option:selected").text());
+
+                this.submit();
+            });
+
+            $('#material_id').on('change', function () {
+                let isRop = `${$(`#isRop_${this.value}`).val()}`;
+                isRop = isRop.split("|")[1]
+
+                if (isRop !== "False") {
+                    $("#ropOption").removeAttr("hidden")
+                } else {
+                    $("#ropOption").attr("hidden", true)
+                    $("#rop").val(0)
+                    $("#usge_qty").val(0)
+                    $("#shift").val(0)
+                    $("#max_qty").val(0)
+                }
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,197 @@
+﻿@model FulfillData
+@{
+    var _dataSupplier = ViewBag.SupplierData as List<Vendor>;
+}
+<style>
+    .modal-footer {
+        display: block !important;
+    }
+
+    /*
+        html body .content .content-wrapper {
+            padding: 0.1rem .1rem 0;
+        }*/
+</style>
+
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card border-info">
+                            <div class="card-content collapse show">
+                                <div class="card-body font-large-1">
+                                    <form id="myForm" method="post">
+                                        <input type="hidden" asp-for="raw_material_id" />
+                                        <input type="hidden" asp-for="raw_material_name" />
+                                        <input type="hidden" asp-for="location_id" />
+                                        <input type="hidden" asp-for="supplier_name" />
+                                        <input type="hidden" asp-for="supplier_id" />
+                                        <div class="form-body">
+                                            <h5 class="form-section font-large-1">
+                                                <i class="ft-monitor"></i> ลงทะเบียน <span class="text-info">@Model.raw_material_name</span>
+                                                <span class="text-danger pull-right">@Model.error_message</span>
+                                            </h5>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control">
+                                                    ทะเบียนรถ <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input asp-for="car_license" type="text" class="form-control"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           data-validation-regex-regex="([ก-ฮ0-9]+$)"
+                                                           data-validation-regex-message="เฉพาะตัวเลขและภาษาไทยติดกันเท่านั้น ห้ามเว้นวรรคหรือขีด"
+                                                           aria-invalid="true" placeholder="กรอกข้อมูลติดกันโดยไม่มีเว้นวรรคหรือขีด เช่น กท1234, 87453">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput2">คู่ค้า</label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <select id="ddlSupplier" class="form-control select2-size-sm "
+                                                            disabled data-validation-required-message="กรุณากรอกข้อมูล"
+                                                            aria-invalid="true">
+                                                        <option value="">เลือกคู่ค้า</option>
+                                                        @foreach (var item in _dataSupplier)
+                                                        {
+                                                            <option value="@item.id">@item.name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    เลขที่เอกสาร
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                           asp-for="document_no"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    น้ำหนักต้นทาง
+                                                    (กิโลกรัม) <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" asp-for="weight_register"
+                                                           class="form-control"
+                                                           data-validation-regex-regex="\d{0,9}(\.\d{1,4})?"
+                                                           data-validation-regex-message="เฉพาะตัวเลขและทศนิยมไม่เกิน 4 ตำแหน่ง"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                            aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control"
+                                                       for="projectinput1">สถานที่</label>
+                                                <div class="controls col-md-4 mx-auto">
+                                                    <input type="text" asp-for="location_name" class="form-control"
+                                                           readonly>
+                                                </div>
+                                                <div class="controls col-md-4 text-right">
+                                                    <button type="submit" class="btn btn-success btn-lg">
+                                                        <i class="la la-check-square-o"></i> บันทึก
+                                                    </button>
+
+                                                    <a asp-action="Index" asp-controller="Home"
+                                                       class="btn btn-danger btn-lg">
+                                                        <i class="ft-x"></i> ยกเลิก
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="modal fade text-left" id="xQR" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel20" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-xs" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="myModalLabel20">QR Code</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="~/app-assets/images/qr.png" height="250px" width="auto" />
+                                                    <span class="text-bold-600"></span>
+                                                </div>
+                                                <div class="modal-footer text-bold-600">
+                                                    สถานที่ : <span class="text-info text-bold-600" id="qrLoc"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
+        $(function () {
+            $('.select2-size-sm').select2({
+                dropdownAutoWidth: true,
+                width: '100%',
+
+            });
+
+            let _ven = getUrlParameter("Vendor");
+            $("#supplier_id").val(_ven);
+            $("#ddlSupplier").val(_ven).trigger("change");
+
+            $("#car_license").select();
+
+            $("#myForm").submit(function (event) {
+                event.preventDefault();
+                debugger
+                $("#supplier_name").val($("#ddlSupplier option:selected").text());
+                this.submit();
+            });
+
+            $("#weight_register").val('');
+        });
+
+
+    </script>
+}

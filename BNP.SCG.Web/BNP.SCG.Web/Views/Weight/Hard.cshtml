@@ -1,0 +1,577 @@
+﻿@model FulfillData
+@{
+
+}
+<style>
+    .card-body {
+        padding: 1rem;
+    }
+</style>
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <fieldset>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="txtScan" placeholder="สแกน QR Code เพื่อชั่งหนัก">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-teal white" type="button" onclick="getDataQR();">ค้นหาชั่งหนัก</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <p class="text-danger text-center font-medium-3" id="err">@(Model == null ? "" : Model.error_message)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @*@if (Model == null)
+            {*@
+            <!-- Basic form layout section start -->
+            <section id="frmWeightIN" style="display:none">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card border-dark">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form class="form" method="post" id="myForm" onkeydown="return event.key != 'Enter';">
+                                        <input type="hidden" asp-for="id" />
+                                        <input type="hidden" asp-for="doc_status" />
+                                        <input type="hidden" id="current_status" />
+                                        <div class="form-body font-large-1">
+                                            @*<h4 class="form-section teal text-bold-300">     <i class="ft-chevrons-down"></i> ชั่งหนัก</h4>*@
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">วันที่ลงทะเบียน </label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="date_in_str" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">ทะเบียนรถ </label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="car_license" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">เลขที่เอกสาร</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="document_no" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-1">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control text-bold-600" for="projectinput1">น้ำหนักชั่งเข้า  (กิโลกรัม) <span class="required">*</span></label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="weight_in" class="form-control text-bold-600 bg-success darken" style="color: black" readonly>
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-1">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">น้ำหนักชั่งออก</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="number" asp-for="weight_out" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-1">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">ผลต่าง</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="weight_diff" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-1">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">สถานที่</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="location_name" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <input type="text" asp-for="second_load" class="form-control" readonly style="display:none">
+                                                <div class="col-md-12 weight-in-2" style="display:none">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control text-bold-600" for="projectinput1">น้ำหนักชั่งเข้า  (กิโลกรัม) <span class="required">*</span></label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="weight_in_2" class="form-control text-bold-600 bg-success darken" style="color: black" readonly>
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-2" style="display:none">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">น้ำหนักชั่งออก</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="number" asp-for="weight_out_2" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-2" style="display:none">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">ผลต่าง</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="weight_diff_2" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 weight-in-2" style="display:none">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">สถานที่ (เติมพ่วง)</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" asp-for="location_id_2" class="form-control" readonly hidden>
+                                                            <input type="text" asp-for="location_name_2" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">สถานะเอกสาร</label>
+                                                        <div class="controls col-md-3" hidden>
+                                                            <h3 class="teal text-bold-600" id="doc_status_text">
+                                                                @(
+                                                                    Model == null ? "" : Model.doc_status
+                                                                    )
+                                                            </h3>
+                                                        </div>
+                                                        <div class="controls col-md-3">
+                                                            <h3 class="teal text-bold-600" id="show_doc_status_thai"></h3>
+                                                        </div>
+                                                        <div class="col-md-5 text-right ">
+                                                            <button type="submit" class="btn btn-success btn-lg">
+                                                                <i class="la la-check-square-o"></i> บันทึกการชั่งหนัก
+                                                            </button>
+
+                                                            <a onclick="Reload()" class="btn btn-danger btn-lg" style="color: white;">
+                                                                <i class="ft-x"></i> ยกเลิก
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-12 label-control text-bold-600" for="projectinput1">
+                                                            <span class="required">กรุณาตรวจสอบข้อมูลก่อนกดยืนยัน</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+            <!-- Basic form layout section start -->
+            <section id="frmCustomer" style="display:none">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card border-dark">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form class="form" method="post" id="customerForm">
+                                        <div class="form-body font-large-1">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">ทะเบียนรถ </label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" id="customer_car_license" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">ชื่อ-นามสกุล</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" id="customer_name" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">เบอร์โทรศัพท์</label>
+                                                        <div class="controls col-md-8 mx-auto">
+                                                            <input type="text" id="customer_phone" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 label-control" for="projectinput1">สถานะ</label>
+                                                        <div class="controls col-md-4 ">
+                                                            <h3 class="teal text-bold-600" id="">เปิด - ปิดประตู</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            var _popupWeightInmessage = "@TempData["PopupWeightIn"]";
+            var _fulfill_id_weight_in = "@TempData["FulfillIdWeihtIn"]";
+            if (_popupWeightInmessage.length > 0 && _popupWeightInmessage != "" && _popupWeightInmessage != undefined) {
+
+                Swal.fire({
+                    type: 'info',
+                    title: `ข้อมูลแนะนำ`,
+                    html: _popupWeightInmessage,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'รับทราบ',
+                    confirmButtonClass: 'btn btn-primary',
+                    buttonsStyling: false,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.value) {
+                        "@TempData.Remove("PopupWeightIn")";
+                        $.ajax({
+                            cache: false,
+                            async: true,
+                            type: "POST",
+                            url: "@Url.Action("OpenGate", "Weight")",
+                            data: { gate_name: "gate2", process: $("#doc_status").val(), fulfill_id: _fulfill_id_weight_in, customer_id: null },
+                            success: function (data) {
+                                if (data.status == "success") {
+
+                                } else {
+
+                                }
+                            },
+                            error: function (err) {
+                                toastr.error("Something went wrong");
+                            },
+                            complete: function (data) {
+
+                            }
+                        });
+                        "@TempData.Remove("FulfillIdWeihtIn")";
+                        Reload();
+                    }
+                })
+                "@TempData.Remove("PopupWeightIn")";
+                "@TempData.Remove("FulfillIdWeihtIn")";
+            }
+
+            $('.select2-size-sm').select2({
+                dropdownAutoWidth: true,
+                width: '100%',
+                containerCssClass: 'select-sm'
+            });
+
+            $("#txtScan").on("keydown", function (event) {
+                if (event.which == 13)
+                    getDataQR();
+            });
+
+            $('#weight_in').keyup(function () {
+                $('#weight_diff').val($(this).val() - $('#weight_out').val());
+            });
+
+            $("#myForm").submit(function (event) {
+                event.preventDefault();
+                $("#supplier_name").val($("#supplier_id option:selected").text());
+                $("#doc_status").val($("#doc_status_text").html());
+                this.submit();
+            });
+
+            if ($("#id").val() > 0) {
+                $("#frmWeightIN").show();
+                $("#doc_status_text").html($("#doc_status").val());
+            }
+            $("#txtScan").select();
+
+            startFunc();
+            getDocStatInThai();
+        });
+
+        function callWeight() {
+            var _data = $("#txtScan").val();
+            var _docStatus = $("#current_status").val();
+
+            if (_docStatus == "NEW") {
+
+                $.ajax({
+                    cache: false,
+                    async: true,
+                    type: "POST",
+                    url: "@Url.Action("getDataWeight", "Weight")",
+                    data: { qr: _data, status: "in" },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            $("#weight_in").val(data.model);
+                            upDateDiff()
+                        } else {
+                            toastr.error("Something went wrong : " + data.message);
+                        }
+                    },
+                    error: function (err) {
+                        toastr.error("Something went wrong");
+                    },
+                    complete: function (data) {
+
+                    }
+
+                });
+            }
+
+
+            if (_docStatus == "WEIGHT-OUT") {
+                $.ajax({
+                    cache: false,
+                    async: true,
+                    type: "POST",
+                    url: "@Url.Action("getDataWeight", "Weight")",
+                    data: { qr: _data, status: "in_2" },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            $("#weight_in_2").val(data.model);
+                            upDateDiff()
+                        } else {
+                            toastr.error("Something went wrong : " + data.message);
+                        }
+                    },
+                    error: function (err) {
+                        toastr.error("Something went wrong");
+                    },
+                    complete: function (data) {
+
+                    }
+
+                });
+            }
+        }
+
+        function startFunc() {
+            _x = setInterval(function () {
+                //$("#x").html($("#x").html() +  "x");
+                callWeight();
+            }, 3000);
+
+        }
+
+        function getDataQR() {
+            // $("#txtScan").attr('readonly', true)
+            var _data = $("#txtScan").val();
+            if (_data == "") {
+                toastr.error("กรุณากรอกข้อมูล !!");
+                $("#txtScan").select();
+                return false;
+            }
+
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("getDataByQR", "Weight")",
+                data: { qr: _data, process: "weight_in" },
+                beforeSend: function () {
+                    $("#txtScan").attr('readonly', true)
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+
+                        if (data.type == "fulfill") {
+                            //Assign
+                            var _data = data.model;
+                            //debugger
+                            $("#car_license").val(_data.car_license);
+                            $("#document_no").val(_data.document_no);
+                            $("#date_in_str").val(_data.date_in_str);
+                            $("#id").val(_data.id);
+                            $("#location_name").val(_data.location_name);
+                            $("#doc_status").html(_data.doc_status);
+                            $("#doc_status_text").html(_data.doc_status);
+                            $("#weight_in").val(_data.weight_in);
+                            $("#weight_out").val(_data.weight_out);
+                            $("#weight_diff").val(_data.weight_diff);
+                            $("#weight_in_2").val(_data.weight_in_2);
+                            $("#weight_out_2").val(_data.weight_out_2);
+                            $("#weight_diff_2").val(_data.weight_diff_2);
+                            $("#location_id_2").val(_data.location_id_2);
+                            $("#location_name_2").val(_data.location_name_2);
+                            $("#err").html("");
+                            $("#frmCustomer").hide();
+                            $("#frmWeightIN").show();
+                            $("#weight_in").select();
+                            $("#current_status").val(_data.doc_status);
+
+
+                            if (_data.second_load) {
+                                $(".weight-in-1").hide();
+                                $(".weight-in-2").show();
+                                $("#second_load").val(_data.second_load)
+                            }
+
+                            getDocStatInThai()
+                            console.log()
+                            OpenGate("gate1", "SCAN_GATE_1", _data.id, null);
+
+                        } else {
+                            var _data = data.model;
+                            $("#err").html("");
+                            $("#frmWeightIN").hide();
+                            $("#frmCustomer").show();
+                            $("#customer_car_license").val(_data.car_license);
+                            $("#customer_name").val(_data.name);
+                            $("#customer_phone").val(_data.phone);
+
+                            OpenGate("gate1", "SCAN_GATE_1", null, _data.id);
+                            _x = setInterval(function () {
+                                OpenGate("gate2", "SCAN_GATE_2", null, _data.id);
+                                Reload();
+                            }, 10000);
+                        }
+
+                    } else {
+                        $("#txtScan").select();
+                        $("#car_license").val("");
+                        $("#document_no").val("");
+                        $("#date_in_str").val("");
+                        $("#id").val("");
+                        $("#location_name").val("");
+                        $("#doc_status").html("");
+                        $("#weight_in").val("");
+                        $("#weight_out").val("");
+                        $("#weight_diff").val("");
+                        $("#weight_in_2").val("");
+                        $("#weight_out_2").val("");
+                        $("#weight_diff_2").val("");
+                        $("#doc_status_text").html("");
+                        $("#frmWeightIN").hide();
+                        toastr.error(`${data.message}`);
+
+                        $("#current_status").val("");
+                    }
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function () {
+                    $("#txtScan").removeAttr('readonly')
+                }
+            });
+
+            setInterval(function () {
+            }, 10000);
+        }
+
+        function OpenGate(_gate_name, _process, _fulfill_id, _customer_id) {
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("OpenGate", "Weight")",
+                data: { gate_name: _gate_name, process: _process, fulfill_id: _fulfill_id, customer_id: _customer_id },
+                success: function (data) {
+                    if (data.status == "success") {
+
+                    } else {
+
+                    }
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function (data) {
+
+                }
+            });
+        }
+
+        function upDateDiff() {
+            var weightIn = $("#weight_in").val();
+            var weightOut = $("#weight_out").val();
+            let _cal_1 = parseFloat(weightIn) - parseFloat(weightOut);
+            $('#weight_diff').val(_cal_1);
+
+            var weightIn_2 = $("#weight_in_2").val();
+            var weightOut_2 = $("#weight_out_2").val();
+            let _cal_2 = parseFloat(weightIn_2) - parseFloat(weightOut_2);
+            $('#weight_diff_2').val(_cal_2);
+        }
+
+        function getDocStatInThai() {
+            var doc_status = $("#doc_status_text").text();
+
+            if (doc_status !== "") {
+
+                var stat = "";
+
+                if (doc_status === "WEIGHT-IN") {
+                    doc_status = doc_status + " (ชั่งหนัก)";
+                }
+                else if (doc_status === "WEIGHT-OUT") {
+                    doc_status = doc_status + " (ชั่งเบา)";
+                }
+                else if (doc_status === "WEIGHT-IN-2") {
+                    doc_status = doc_status + " (ชั่งหนัก เติมพ่วง)";
+                }
+                else if (doc_status === "WEIGHT-OUT-2") {
+                    doc_status = doc_status + " (ชั่งเบา เติมพ่วง)";
+                }
+                else {
+                    doc_status = doc_status + " (ใบงานใหม่)";
+                }
+
+                $("#show_doc_status_thai").html(doc_status);
+
+            }
+
+        }
+
+        function Reload() {
+            debugger
+            //window.location = window.location.origin + "/Weight/Hard";
+            window.location = window.location.origin + "/scg/Weight/Hard";
+        }
+    </script>
+}

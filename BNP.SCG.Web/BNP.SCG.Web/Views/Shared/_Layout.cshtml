@@ -1,0 +1,570 @@
+﻿@using System.Security.Claims
+@{
+    var _userFName = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == "UserFirstName").Select(c =>
+            c.Value).FirstOrDefault();
+    var _userLName = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == "UserLastName").Select(c =>
+    c.Value).FirstOrDefault();
+    var _userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == "UserId").Select(c =>
+    c.Value).FirstOrDefault();
+    var _userRole = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c =>
+    c.Value).FirstOrDefault();
+
+    var successMessages = TempData["SuccessMessages"] as String;
+    var errMessages = TempData["ErrorMessages"] as String;
+}
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+          content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
+    <meta name="keywords"
+          content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+    <meta name="author" content="PIXINVENT">
+    <title>Raw Material Receiver - SCG</title>
+    <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700"
+          rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/weather-icons/climacons.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/meteocons/style.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/charts/morris.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/charts/chartist.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/charts/chartist-plugin-tooltip.css">
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/simple-line-icons/style.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/timeline.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/dashboard-ecommerce.css">
+    <!-- END: Page CSS-->
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/sweetalert2.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-tooltip.css">
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/icheck/icheck.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/toggle/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/toggle/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/forms/validation/form-validation.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/forms/switch.min.css">
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/gallery.min.css">
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <!-- END: Custom CSS-->
+    <style>
+        .header-navbar .navbar-header .navbar-brand .brand-logo {
+            width: 120px !important;
+        }
+
+        html body .content .content-wrapper {
+            padding: 0.1rem .1rem 0;
+        }
+
+        .container {
+            width: auto;
+        }
+
+        .horizontal-menu .navbar-horizontal ul#main-menu-navigation > li > a {
+            padding: 0.8rem 1rem;
+        }
+
+        .header-navbar {
+            min-height: 1rem;
+        }
+
+        html body .pace .pace-progress {
+            background: #2196f3;
+        }
+
+        .select2-container--classic .select2-results__options .select2-results__option[aria-selected=true],
+        .select2-container--default .select2-results__options .select2-results__option[aria-selected=true] {
+            background-color: #28d094 !important;
+            color: #fff !important;
+        }
+
+        .required {
+            color: #ff0000;
+        }
+
+        .ex {
+            width: 100%;
+            height: 100%;
+            background-color: #e9e9e9;
+            opacity: 0.3;
+            position: relative;
+        }
+
+            .ex .txt {
+                position: fixed;
+                top: 25%;
+                left: 40%;
+                z-index: 99;
+                font-size: 50px;
+                font-weight: 900;
+                padding-left: initial;
+                padding-top: initial;
+                text-align: center;
+                transform-origin: 0 0;
+                transform: rotate(40deg);
+            }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        form .form-actions {
+            padding: 10px 0;
+        }
+
+        html body .content {
+            min-height: calc(100% - 12rem);
+        }
+
+        body,
+        .form-control {
+            font-size: 1.2rem !important;
+        }
+
+        form .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .select2-container--classic .select2-selection--multiple .select2-selection__choice,
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #28d094 !important;
+        }
+    </style>
+</head>
+<!-- END: Head-->
+<!-- BEGIN: Body-->
+
+<body class="horizontal-layout horizontal-menu 2-columns  " data-open="hover" data-menu="horizontal-menu"
+      data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow navbar-static-top navbar-light navbar-brand-center">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-md-none mr-auto">
+                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                            <i class="ft-menu font-large-1"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="#">
+                            <img class="brand-logo" alt="modern admin logo" src="~/app-assets/images/logo/logo-scg.png">
+                        </a>
+                    </li>
+                    <li class="nav-item d-md-none">
+                        <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile">
+                            <i class="la la-ellipsis-v"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-container content center-layout">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav mr-auto float-left">
+                        <li class="nav-item d-none d-md-block">
+                            <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a>
+                        </li>
+                        <li class="nav-item d-none d-lg-block">
+                            <a class="nav-link nav-link-expand" href="#">
+                                <i class="ficon ft-maximize"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav float-right">
+
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1 user-name text-bold-700">@_userFName @_userLName</span><span class="avatar avatar-online">
+                                    <img src="~/app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><i></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Account"
+                                   asp-route-id="@_userId"><i class="ft-user"></i> Edit Profile</a>
+
+                                @if (_userRole == "admin")
+                                {
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="SystemConfig">
+                                        <i class="ft-settings"></i> Config
+                                    </a>
+                                }
+
+                                <div class="dropdown-divider"></div><a class="dropdown-item" asp-action="Logout"
+                                                                       asp-controller="Account"><i class="ft-power"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END: Header-->
+    <!-- BEGIN: Main Menu-->
+
+    <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-dark navbar-without-dd-arrow navbar-shadow "
+         role="navigation" data-menu="menu-wrapper">
+        <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
+            <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+
+
+                @if (_userRole == "admin" || _userRole == "register")
+                {
+                    <li class="nav-item @Html.IsSelected("Home", "Index")">
+                        <a class="nav-link" asp-action="Index" asp-controller="Home">
+                            <i class="la la-home"></i><span data-i18n="Dashboard">หน้าหลัก</span>
+                        </a>
+                    </li>
+                }
+
+
+                @if (_userRole == "admin")
+                {
+
+                    <li class="nav-item @Html.IsSelected("Account", "Index")">
+                        <a class="nav-link" asp-action="Index" asp-controller="Account">
+                            <i class="la la-user"></i><span data-i18n="Dashboard">จัดการผู้ใช้งาน</span>
+                        </a>
+                    </li>
+
+                    <li class="dropdown nav-item @Html.IsSelected("MasterData", "")" data-menu="dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="la la-cogs"></i><span data-i18n="Dashboard">ตั้งค่าข้อมูลระบบ</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Vendor" asp-controller="MasterData"
+                                   data-toggle=""><span data-i18n="Modern Menu">คู่ค้า</span></a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Location" asp-controller="MasterData"
+                                   data-toggle=""><span data-i18n="Modern Menu">สถานที่ส่ง</span></a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="RawMaterialType" asp-controller="MasterData"
+                                   data-toggle="">
+                                    <span data-i18n="Modern Menu">ประเภทวัตถุดิบ</span>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Category" asp-controller="MasterData" data-toggle="">
+                                    <span data-i18n="Modern Menu">หมวดหมู่</span>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="RawMaterial" asp-controller="MasterData"
+                                   data-toggle=""><span data-i18n="Modern Menu">วัตถุดิบ</span></a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Index" asp-controller="ROP" data-toggle="">
+                                    <span data-i18n="Modern Menu">ตั้งค่าลงวัตถุดิบและ ROP</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+
+                @if (_userRole == "admin")
+                {
+                    <li class="dropdown nav-item @Html.IsSelected("Registration", "")" data-menu="dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="la la-commenting"></i><span data-i18n="Dashboard">การลงทะเบียน</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Category" asp-controller="Registration" data-toggle="">
+                                    <span data-i18n="Modern Menu">เริ่มการลงทะเบียน</span>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Form" asp-controller="Registration" data-toggle="">
+                                    <span data-i18n="Modern Menu">แก้ไขการลงทะเบียน</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    @if (_userRole == "register")
+                    {
+                        <li class="nav-item @Html.IsSelected("Registration", "Category")">
+                            <a class="nav-link" asp-action="Category" asp-controller="Registration">
+                                <i class="la la-commenting"></i><span data-i18n="Dashboard">เริ่มการลงทะเบียน</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item @Html.IsSelected("Registration", "Form")">
+                            <a class="nav-link" asp-action="Form" asp-controller="Registration">
+                                <i class="la la-commenting"></i><span data-i18n="Dashboard">แก้ไขการลงทะเบียน</span>
+                            </a>
+                        </li>
+                    }
+                }
+
+                @if (_userRole == "admin" || _userRole == "weight")
+                {
+                    <li class="nav-item @Html.IsSelected("Weight", "Hard")">
+                        <a class="nav-link" asp-action="Hard" asp-controller="Weight">
+                            <i class="la la-angle-double-down"></i><span data-i18n="Dashboard">ชั่งหนัก</span>
+                        </a>
+                    </li>
+                    <li class="nav-item @Html.IsSelected("Weight", "Low")">
+                        <a class="nav-link" asp-action="Low" asp-controller="Weight">
+                            <i class="la la-angle-double-up"></i><span data-i18n="Dashboard">ชั่งเบา</span>
+                        </a>
+                    </li>
+                }
+
+
+                @if (_userRole == "admin")
+                {
+                    <li class="dropdown nav-item @Html.IsSelected("Customer", "")" data-menu="dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="la la-certificate"></i><span data-i18n="Dashboard">ลูกค้า</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Customer" data-toggle="">
+                                    <span data-i18n="Modern Menu">เริ่มการลงทะเบียนลูกค้า</span>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Form" asp-controller="Customer" data-toggle="">
+                                    <span data-i18n="Modern Menu">แก้ไขการลงทะเบียนลูกค้า</span>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Gate3" asp-controller="Customer" data-toggle="">
+                                    <span data-i18n="Modern Menu">ประตู 3</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    @if (_userRole == "weight")
+                    {
+                        <li class="nav-item @Html.IsSelected("Customer", "Gate3")">
+                            <a class="nav-link" asp-action="Gate3" asp-controller="Customer">
+                                <i class="la la-angle-double-right"></i><span data-i18n="Dashboard">ประตู 3</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (_userRole == "register")
+                    {
+                        <li class="nav-item @Html.IsSelected("Customer", "Index")">
+                            <a class="nav-link" asp-action="Index" asp-controller="Customer">
+                                <i class="la la-certificate"></i><span data-i18n="Dashboard">ลงทะเบียนลูกค้า</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item @Html.IsSelected("Customer", "Form")">
+                            <a class="nav-link" asp-action="Form" asp-controller="Customer">
+                                <i class="la la-certificate"></i><span data-i18n="Dashboard">แก้ไขการลงทะเบียนลูกค้า</span>
+                            </a>
+                        </li>
+                    }
+                }
+
+                @if (_userRole == "admin")
+                {
+
+                    <li class="dropdown nav-item @Html.IsSelected("Report", "")" data-menu="dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="la la-file-text-o"></i><span data-i18n="Dashboard">รายงาน</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Report"
+                                   data-toggle=""><span data-i18n="Modern Menu">ลงทะเบียนโหลดวัตถุดิบ</span></a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" asp-action="Customer" asp-controller="Report"
+                                   data-toggle=""><span data-i18n="Modern Menu">ลงทะเบียนลูกค้า</span></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                }
+
+
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        @RenderBody()
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light navbar-shadow">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+            <span class="float-md-left d-block d-md-inline-block">
+                Copyright &copy; 2023 <a class="text-bold-800 grey darken-2" href="#" target="_blank">LOGICODE</a>
+            </span><span class="float-md-right d-none d-lg-block">
+                Hand-crafted & Made with<i class="ft-heart pink"></i><span id="scroll-top"></span>
+            </span>
+        </p>
+    </footer>
+    <!-- END: Footer-->
+    <!-- BEGIN: Vendor JS-->
+    <script src="~/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="~/app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="~/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+    <script src="~/app-assets/vendors/js/charts/chartist.min.js"></script>
+    <script src="~/app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js"></script>
+    <script src="~/app-assets/vendors/js/charts/raphael-min.js"></script>
+    <script src="~/app-assets/vendors/js/charts/morris.min.js"></script>
+    <script src="~/app-assets/vendors/js/timeline/horizontal-timeline.js"></script>
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Theme JS-->
+    <script src="~/app-assets/js/core/app-menu.js"></script>
+    <script src="~/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+    <!-- BEGIN: Page JS-->
+    <script src="~/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
+
+
+    <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/jszip.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/pdfmake.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/vfs_fonts.js"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.html5.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.print.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.colVis.min.js"></script>
+    <script src="~/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+    <script src="~/app-assets/vendors/js/extensions/toastr.min.js"></script>
+    <!-- END: Page JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="~/app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script>
+    <script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+    <script src="~/app-assets/vendors/js/forms/icheck/icheck.min.js"></script>
+    <script src="~/app-assets/vendors/js/forms/toggle/bootstrap-switch.min.js"></script>
+    <script src="~/app-assets/vendors/js/forms/toggle/switchery.min.js"></script>
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Page JS-->
+    <script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <!-- END: Page JS-->
+    @* <!-- BEGIN: Page JS-->
+    <script src="~/app-assets/js/scripts/forms/select/form-select2.min.js"></script>
+    <!-- END: Page JS-->
+    *@
+    <script>
+        $(function () {
+
+            var _message = "@TempData["Message"]";
+            if (_message.length > 0 && _message != "" && _message != undefined) {
+                toastr.success(_message);
+                "@TempData.Remove("Message")";
+            }
+
+            var _errormessage = "@TempData["ErrorMessage"]";
+            if (_errormessage.length > 0 && _errormessage != "" && _errormessage != undefined) {
+                toastr.error(_errormessage);
+                "@TempData.Remove("ErrorMessage")";
+            }
+
+            var _notimessage = "@TempData["NotiMessage"]";
+            if (_notimessage.length > 0 && _notimessage != "" && _notimessage != undefined) {
+                toastr.info(_notimessage);
+                "@TempData.Remove("NotiMessage")";
+            }
+
+            var _notimessage_updateduser = "@TempData["NotiMessageUpdatedUser"]";
+            if (_notimessage_updateduser.length > 0 && _notimessage_updateduser != "" && _notimessage_updateduser != undefined) {
+
+                Swal.fire({
+                    type: 'info',
+                    title: `ข้อมูลแนะนำ`,
+                    html: _notimessage_updateduser,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'ยืนยัน!',
+                    confirmButtonClass: 'btn btn-primary',
+                    cancelButtonClass: 'btn btn-danger ml-1',
+                    cancelButtonText: 'ยกเลิก',
+                    buttonsStyling: false,
+                }).then((result) => {
+                    if (result.value) {
+                        "@TempData.Remove("NotiMessageUpdatedUser")";
+                        $.get('@Url.Action("Logout", "Account")', function () {
+                            location.reload();
+                        });
+                    }
+                })
+                "@TempData.Remove("NotiMessageUpdatedUser")";
+            }
+
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+<!-- END: Body-->
+
+</html>

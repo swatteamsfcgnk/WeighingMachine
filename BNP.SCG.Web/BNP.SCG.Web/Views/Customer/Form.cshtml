@@ -1,0 +1,263 @@
+﻿@model Customer
+@{
+    string _uniq = (Model == null ? "" : Model.uniq_data.ToString());
+    string _qr = ViewBag.qrCodeImage as string;
+    string _err = (Model == null ? "" : Model.error_message.ToString());
+}
+<style>
+    .modal-footer {
+        display: block !important;
+    }
+</style>
+<div class="app-content container center-layout ">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+
+                        <div class="form-group row my-2">
+
+                            <div class="col-md-12 mx-auto">
+                                <fieldset>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="txtScan"
+                                               placeholder="ค้นหาด้วย QR Code / ทะเบียนรถ / ชื่อ-นามสกุล / เบอร์โทรศัพท์ ...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info btn-outline-blue white" type="button"
+                                                    onclick="getDataQR();">
+                                                ค้นหา
+                                            </button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <p class="text-danger text-center font-medium-3" id="err">@_err</p>
+                        </div>
+
+                        <div id="showData" class="card border-info" style="display:none;">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post" asp-action="Form" asp-controller="Customer">
+                                        <input type="hidden" asp-for="id" />
+                                        <input type="hidden" asp-for="uniq_data" />
+                                        <div class="form-body font-large-1">
+                                            <h5 class="form-section font-large-1">
+                                                <i class="ft-monitor"></i> ข้อมูลลงทะเบียน <span class="text-info">
+                                                    @(Model == null ? "" :
+                                                        Model.name)
+                                                </span>
+                                            </h5>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control">
+                                                    ทะเบียนรถ <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input asp-for="car_license" type="text" class="form-control"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           data-validation-regex-regex="([ก-ฮ0-9]+$)"
+                                                           data-validation-regex-message="เฉพาะตัวเลขและภาษาไทยติดกันเท่านั้น ห้ามเว้นวรรคหรือขีด"
+                                                           aria-invalid="true" placeholder="กรอกข้อมูลติดกันโดยไม่มีเว้นวรรคหรือขีด เช่น กท1234, 87453">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    ชื่อ-นามสกุล
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                           asp-for="name"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    เบอร์โทรศัพท์
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                           asp-for="phone">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-12 text-right">
+                                                    <button type="submit" class="btn btn-success btn-lg">
+                                                        <i class="la la-check-square-o"></i> บันทึก
+                                                    </button>
+
+                                                    <a asp-action="Index" asp-controller="Home" class="btn btn-danger btn-lg">
+                                                        <i class="ft-x"></i> ยกเลิก
+                                                    </a>
+                                                    <button type="button" class="btn btn-info btn-lg" onclick="Print()">
+                                                        <i class="ft-package"></i> ปริ้น QR Code
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="modal fade text-left" id="xQR" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel20" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-xs" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="myModalLabel20">QR Code</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="imgQR" height="auto" width="250"
+                                                         src="data:image/png;base64,@_qr" />
+                                                    <span class="text-bold-600 text-blue-grey font-small-3"
+                                                          id="qrText"></span>
+                                                </div>
+                                                <div class="modal-footer text-bold-600">
+                                                    ประเภท : <span class="text-info text-bold-600" id="qrLoc">ลูกค้า</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+        $(function () {
+            $('.select2-size-sm').select2({
+                dropdownAutoWidth: true,
+                width: '100%',
+
+            });
+
+            if ("@_qr" == "NO") {
+                $("#showData").hide();
+            } else {
+                if ("@_err" != "") {
+                    //$("#xQR").modal("hide");
+                } else {
+                    //$("#xQR").modal("show");
+                }
+                $("#showData").show();
+                $("#qrText").html("@_uniq");
+                //$("#imgQR").attr('src', "data:image/png;base64,@ViewBag.qrCodeImage");
+            }
+
+            $("#txtScan").on("keydown", function (event) {
+                if (event.which == 13)
+                    getDataQR();
+            });
+
+            //$("#myForm").submit(function (event) {
+            //    event.preventDefault();
+            //    this.submit();
+            //});
+
+            $("#txtScan").select();
+        });
+
+        function getDataQR() {
+            var _data = $("#txtScan").val();
+            if (_data == "") {
+                toastr.error("กรุณากรอกข้อมูล !!");
+                $("#txtScan").select();
+                return false;
+            }
+
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("getDataByKeyword", "Customer")",
+                data: { keyword: _data },
+                success: function (data) {
+                    if (data.status == "success") {
+                        window.location = "@Url.Action("Form","Customer")?id=" + data.model.id;
+                    } else {
+                        $("#txtScan").select();
+                        toastr.error(`${data.message}`);
+                    }
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function (data) {
+
+                }
+            });
+        }
+
+        function Print() {
+
+            var _id = $("#id").val();
+
+            Swal.fire({
+                title: 'คุณต้องการพิมพ์ QR Code ?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน!',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: 'ยกเลิก',
+                buttonsStyling: false,
+            }).then(function (result) {
+                if (result.value) {
+
+                    //var _url = '@Url.Action("PrintQR", "Registration")?id=' + _id;
+                    //window.open(_url);
+
+
+                    $.ajax({
+                        cache: false,
+                        async: true,
+                        type: "GET",
+                        url: "@Url.Action("PrintQR", "Customer")",
+                        data: { id: _id },
+                        success: function (data) {
+                            if (data.status == "success") {
+                                toastr.success("พิมพ์ QR เรียบร้อย !!");
+                                $("#xQR").modal("show");
+                            } else {
+                                toastr.error(`${data.message}`);
+                            }
+                        },
+                        error: function (err) {
+                            toastr.error("Something went wrong");
+                        },
+                        complete: function (data) {
+
+                        }
+                    });
+
+                }
+            });
+
+
+        }
+
+    </script>
+}

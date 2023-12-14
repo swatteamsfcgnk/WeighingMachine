@@ -1,0 +1,201 @@
+@model BNP.SCG.Web.Models.User
+
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post">
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="ft-user"></i> ข้อมูลผู้ใช้งาน
+                                            </h4>
+                                            <input asp-for="id" id="userId" type="text" class="form-control mb-1"
+                                                   data-validation-required-message="กรุณากรอกข้อมูล" aria-invalid="true"
+                                                   hidden>
+                                            <div class="help-block"></div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>ชื่อผู้ใช้งาน <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="username" id="username" type="text"
+                                                                   class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true" readonly>
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>อีเมล์</label>
+                                                        <div class="controls">
+                                                            <input asp-for="email" type="text" class="form-control mb-1"
+                                                                   placeholder="Email Address"
+                                                                   data-validation-regex-regex="([a-z0-9_\.-]+)@@([\da-z\.-]+)\.([a-z\.]{2,6})"
+                                                                   data-validation-regex-message="Enter Valid Email">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (Model.id > 0)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group required-pass">
+                                                            <label>
+                                                                รหัสผ่าน <span class="required">*กรุณาใส่รหัสผ่านใหม่หากต้องการเปลี่ยนรหัสผ่าน</span>
+                                                            </label>
+                                                            <div class="controls">
+                                                                <input asp-for="password" type="password" class="form-control mb-1">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group required-pass">
+                                                            <label>ยืนยันรหัสผ่าน</label>
+                                                            <div class="controls">
+                                                                <input type="password" name="password2"
+                                                                       data-validation-match-match="password"
+                                                                       class="form-control mb-1">
+                                                                <div class="help-block"></div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group required-pass">
+                                                            <label>รหัสผ่าน <span class="required">*</span></label>
+                                                            <div class="controls">
+                                                                <input asp-for="password" type="password" class="form-control mb-1"
+                                                                       data-validation-required-message="กรุณากรอกข้อมูล">
+                                                                <div class="help-block"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group required-pass">
+                                                            <label>ยืนยันรหัสผ่าน <span class="required">*</span></label>
+                                                            <div class="controls">
+                                                                <input type="password" name="password2"
+                                                                       data-validation-match-match="password"
+                                                                       class="form-control mb-1">
+                                                                <div class="help-block"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>ชื่อจริง <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="first_name" type="text" class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>นามสกุล <span class="required">*</span></label>
+                                                        <div class="controls">
+                                                            <input asp-for="last_name" type="text" class="form-control mb-1"
+                                                                   data-validation-required-message="กรุณากรอกข้อมูล"
+                                                                   aria-invalid="true">
+                                                            <div class="help-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <fieldset class="form-group">
+                                                        <label>สิทธิ์การใช้งาน</label>
+                                                        <select asp-for="role" class="select2 form-control">
+                                                            <option value="register">register</option>
+                                                            <option value="weight">weight</option>
+                                                            <option value="vendor">vendor</option>
+                                                            <option value="customer">customer</option>
+                                                            <option value="admin">admin</option>
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    @if (Model.id > 0)
+                                                    {
+                                                        <div class="form-group">
+                                                            <label>สถานะ</label>
+                                                            <div class="controls">
+                                                                <input asp-for="is_active" type="checkbox" class="switchery">
+                                                                <span class="ml-1">Active</span>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="form-group">
+                                                            <label>สถานะ</label>
+                                                            <div class="controls">
+                                                                <input asp-for="is_active" type="checkbox" class="switchery"
+                                                                       checked="true">
+                                                                <span class="ml-1">Active</span>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="la la-check-square-o"></i> Save
+                                            </button>
+                                            <a asp-controller="Account" asp-action="Index" class="btn btn-danger mr-1">
+                                                <i class="ft-x"></i> Cancel
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        if ($("#userId").val() === "0") {
+            $("#username").removeAttr("readonly");
+        }
+
+    </script>
+}

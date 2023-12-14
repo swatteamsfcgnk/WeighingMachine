@@ -1,0 +1,263 @@
+﻿@model List<ROPData>
+@{
+    var _rop = Model.Where(w => w.is_rop).ToList();
+    var _rop_category = Model.Where(w => w.is_rop).DistinctBy(d => d.material_name).ToList();
+    var _nonrop = Model.Where(w => !w.is_rop).ToList();
+}
+<style>
+    .card .card-title {
+        font-size: 2.12rem;
+    }
+
+    .img-fluid {
+        height: 100px !important;
+    }
+</style>
+<div class="content-overlay"></div>
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body pt-2">
+        <section id="html5">
+            @*<h1 class="d-flex text-info bg-light text-bold-600 justify-content-center">ใช้งาน ROP</h1>*@
+            <div class="row justify-content-md-center">
+
+                @* @foreach (var item in _rop)
+                {
+                <div class="col-xl-3 col-lg-6 col-sm-12">
+                <div class="card border-0 box-shadow-0">
+                <div class="card-content" onclick="goDis()"
+                id="@String.Format("demo2_{0}_{1}", item.material_id,item.location_id)">
+                <img class=" card-img img-fluid" src="../app-assets/images/silo.jpg" alt="Card image">
+                <div class="card-img-overlay overlay-dark"
+                id="@String.Format("demo_{0}_{1}", item.material_id,item.location_id)">
+                <h4 class="card-title text-white">@item.material_name</h4>
+                <h5 class=" text-white pull-right text-bold-700"
+                id="@String.Format("demo3_{0}_{1}", item.material_id,item.location_id)">
+                @item.location_name</h5>
+                </div>
+                </div>
+                </div>
+                </div>
+                }*@
+
+                @foreach (var item in _rop)
+                {
+                    <div class="col-xl-3 col-lg-6 col-sm-12 @String.Format("div_rop_{0}", item.material_id)" id="@String.Format("div_rop_{0}_{1}", item.material_id, item.location_id)" style="display: none;">
+                        <div class="card border-0 box-shadow-0">
+                            <div class="card-content" onclick="goDis()"
+                                 id="@String.Format("demo2_{0}_{1}", item.material_id, item.location_id)">
+                                <img class=" card-img img-fluid" src="../app-assets/images/silo.jpg" alt="Card image">
+                                <div class="card-img-overlay overlay-dark"
+                                     id="@String.Format("demo_{0}_{1}", item.material_id, item.location_id)">
+                                    <h4 class="card-title text-white">@item.material_name</h4>
+                                    <h5 class=" text-white pull-right text-bold-700"
+                                        id="@String.Format("demo3_{0}_{1}", item.material_id, item.location_id)">
+                                        @item.location_name
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @foreach (var item in _rop_category)
+                {
+                    <div class="col-xl-3 col-lg-6 col-sm-12 div_rop_cat_@String.Format("{0}", item.material_id)" onclick="goDis()">
+                        <div class="card border-0 box-shadow-0">
+                            <div class="card-content">
+                                <img class=" card-img img-fluid" src="../app-assets/images/silo.jpg" alt="Card image">
+                                <div class="card-img-overlay overlay-dark">
+                                    <h4 class="card-title text-white">@item.material_name</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <hr />
+            @*<h1 class="d-flex text-warning bg-light text-bold-600 justify-content-center" id="x">ไม่ใช้งาน ROP</h1>*@
+            <div class="row justify-content-md-center">
+                @foreach (var item in _nonrop)
+                {
+                    <div class="col-xl-3 col-lg-6 col-sm-12">
+                        <div class="card border-0 box-shadow-0">
+                            <div class="card-content" onclick="goYard('@item.material_name', @item.id)">
+                                <img class="card-img img-fluid" src="~/app-assets/images/concrete-SCG.jpg" alt="Card image">
+                                <div class="card-img-overlay overlay-blue-grey bg-lighten-3">
+                                    <h4 class="card-title text-white">@item.material_name</h4>
+                                    <h5 class=" text-white pull-right text-bold-700">@item.location_name</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="row justify-content-md-center">
+                <div class="col-xl-3 col-lg-6 col-sm-12">
+                    <div class="card bg-gradient-directional-danger">
+                        <a asp-action="Index" asp-controller="Home">
+                            <div class="card-content" style="cursor:pointer;">
+                                <div class="card-body">
+                                    <div class="media d-flex">
+                                        <div class="media-body text-white text-left">
+                                            <h1 class="text-white" style="text-align: center">กลับหน้าหลัก</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        //const myTimeout = setTimeout(myGreeting, 5000);
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
+
+        function myGreeting() {
+            toastr.success('Cement อนุญาตให้ลงทะเบียน', '');
+            $("#demo").removeClass("overlay-dark overlay-lighten-2").addClass("overlay-amber overlay-darken-2");
+            $("#demo2").attr("onclick", "goSilo()");
+            $("#demo3").html("HS1");
+        }
+        function myStopFunction() {
+            clearTimeout(myTimeout);
+        }
+
+        function calSilo() {
+        @* console.log(window.location) *@
+                    var _cat = getUrlParameter("Cate");
+            var _vendor = getUrlParameter("Vendor");
+
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("CalSilo", "Registration")",
+                data: { cat_id: _cat, vendor_id: _vendor },
+                success: function (data) {
+                    if (data.status == "success") {
+
+                        var _data = data.model;
+                        //toastr.info(`กำลังคำนวณการเรียก Silo`, '');
+                        for (let i = 0; i < _data.length; i++) {
+                            if (parseFloat(_data[i].remain_qty) <= parseFloat(_data[i].rop)) {
+                                //debugger
+                                toastr.success(`${_data[i].material_name} ที่ Silo : ${_data[i].location_name} อนุญาตให้ลงทะเบียน`, '');
+                                $("#demo_" + _data[i].material_id + "_" + _data[i].location_id).removeClass("overlay-dark overlay-lighten-2").addClass("overlay-amber overlay-darken-2");
+                                $("#demo2_" + _data[i].material_id + "_" + _data[i].location_id).attr("onclick", "goSilo('" + _data[i].material_id + "','" + _data[i].location_id + "','" + _data[i].material_name + "','" + _data[i].location_name + "', '" + _data[i].id + "')");
+                                $("#demo3_" + _data[i].material_id + "_" + _data[i].location_id).html(`${_data[i].location_name}`);
+                                //$("#demo4_" + _data[i].material_id + "_" + _data[i].location_id).html('');
+
+                                //Show only 1 location / 1 category
+                                $(".div_rop_cat_" + _data[i].material_id).hide();
+                                $(".div_rop_" + _data[i].material_id).hide();
+                                $("#div_rop_" + _data[i].material_id + "_" + _data[i].location_id).show();
+                            }
+                        }
+                    } else {
+                        toastr.error("Something went wrong : " + data.message);
+                    }
+                },
+                error: function (err) {
+                    toastr.error("Something went wrong");
+                },
+                complete: function (data) {
+
+                }
+
+            });
+        }
+
+        function goDis() {
+            toastr.error('ยังไม่อนุญาตให้ลงทะเบียน!!', '');
+        }
+
+        function goSilo(mat_id, loc_id, mat_name, loc_name, rp_id) {
+            Swal.fire({
+                title: `คุณต้องการลงทะเบียนงาน ${mat_name} ที่ Silo ${loc_name} ?`,
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน!',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: 'ยกเลิก',
+                buttonsStyling: false,
+            }).then(function (result) {
+                if (result.value) {
+                    window.location = '@Url.Action("Index","Registration")?RM=' + rp_id + "&Vendor=" + getUrlParameter("Vendor")
+                }
+            });
+        }
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
+        function goYard(rm, rp_id) {
+            Swal.fire({
+                title: 'คุณต้องการลงทะเบียนลงวัตถุดิบ ' + rm + ' นี้?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: 'ยกเลิก',
+                buttonsStyling: false,
+            }).then(function (result) {
+                if (result.value) {
+                    window.location = '@Url.Action("Index","Registration")?RM=' + rp_id + "&Vendor=" + getUrlParameter("Vendor");
+                }
+            });
+        }
+        function myStopFunction() {
+            clearInterval(_x);
+        }
+        var _x;
+        function startFunc() {
+            _x = setInterval(function () {
+                //$("#x").html($("#x").html() +  "x");
+                calSilo()
+            }, 1000);
+        }
+        $(document).ready(function () {
+            startFunc();
+        });
+    </script>
+}

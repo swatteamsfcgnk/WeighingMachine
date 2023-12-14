@@ -1,0 +1,112 @@
+@model BNP.SCG.Web.Models.RawMaterial
+
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post">
+                                        <div class="form-body">
+                                            <h4 class="form-section"><i class="ft-MaterialType"></i>
+                                                ข้อมูลวัตถุดิบ
+                                            </h4>
+                                            <div class="form-group">
+                                                <label>วัตถุดิบ <span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <input asp-for="name" type="text" class="form-control mb-1"
+                                                        data-validation-required-message="กรุณากรอกข้อมูล"
+                                                        aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>หมวดหมู่ <span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select asp-for="category_id"
+                                                        class="form-control mb-1 select2-size-sm"
+                                                        data-validation-required-message="กรุณาเลือกประเภทหมวดหมู่"
+                                                        aria-invalid="true">
+                                                        <option value="">เลือกประเภทหมวดหมู่</option>
+                                                        @foreach (Category item in ViewBag.categories)
+                                                        {
+                                                            <option value="@item.id">@item.name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>ประเภทวัตถุดิบ <span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select asp-for="raw_material_type_id"
+                                                        class="form-control mb-1 select2-size-sm"
+                                                        data-validation-required-message="กรุณาเลือกประเภทวัตถุดิบ"
+                                                        aria-invalid="true">
+                                                        <option value="">เลือกประเภทวัตถุดิบ</option>
+                                                        @foreach (RawMaterialType item in ViewBag.rawMaterialTypes)
+                                                        {
+                                                            <option value="@item.id">@item.name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>คู่ค้า <span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select asp-for="vendors_id" class="form-control mb-1 select2-size-sm"
+                                                    data-validation-required-message="กรุณาเลือกคู่ค้า"
+                                                    aria-invalid="true" multiple="multiple">
+                                                    @foreach (Vendor item in ViewBag.vendors)
+                                                    {
+                                                        <option value="@item.id">@item.name</option>
+                                                    }
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="la la-check-square-o"></i> บันทึก
+                                            </button>
+                                            <a asp-action="RawMaterial" asp-controller="MasterData"
+                                                class="btn btn-danger mr-1">
+                                                <i class="ft-x"></i> ยกเลิก
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+
+    $(function () {
+        $('.select2-size-sm').select2({
+            dropdownAutoWidth: true,
+            width: '100%',
+            
+        });
+
+    });
+
+</script>
+}

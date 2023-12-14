@@ -1,0 +1,308 @@
+﻿@model List<ROPData>
+@{
+    //var _rop = Model.Where(w => w.is_rop).ToList();
+    //var _nonrop = Model.Where(w => !w.is_rop).ToList();
+    //var _categories = Model.Where(w => !w.is_rop).ToList();
+}
+<style>
+    .card .card-title {
+        font-size: 2.12rem;
+    }
+
+    .img-fluid {
+        height: 100px !important;
+    }
+
+    .col-3x {
+        flex: 0 0 25%;
+        max-width: 15%;
+    }
+
+    .alert {
+        margin-bottom: 0.5rem;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+</style>
+<div class="content-overlay"></div>
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body">
+        <section id="html5">
+            <div class="alert alert-info text-center" role="alert">
+                <strong>หมวดหมู่วัตถุดิบ</strong>
+            </div>
+
+            @foreach (ROPData type in ViewBag.categoriesROPDistinct)
+            {
+                <h1 class="d-flex text-info bg-light text-bold-600 justify-content-center">@type.material_type_name (ใช้งาน ROP)</h1>
+                <div class="row justify-content-md-center">
+
+                    @foreach (ROPData item in ViewBag.categoriesROP)
+                    {
+                        @if (item.material_type_name == type.material_type_name)
+                        {
+                            <div class="col-xl-3 col-lg-6 col-sm-12">
+                                <div class="card bg-gradient-directional-info">
+                                    <div class="card-content " style="cursor:pointer" onclick="goCate(@item.category_id)">
+                                        <div class="card-body">
+                                            <div class="media d-flex">
+                                                <div class="media-body text-white text-left">
+                                                    <h1 class="text-white">@item.category_name</h1>
+                                                </div>
+                                                <div class="align-self-center">
+                                                    <i class="icon-pie-chart text-white font-large-2 float-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+
+            @foreach (ROPData type in ViewBag.categoriesNonROPDistinct)
+            {
+                <h1 class="d-flex text-warning bg-light text-bold-600 justify-content-center" id="x">@type.material_type_name (ไม่ใช้งาน ROP)</h1>
+                <div class="row justify-content-md-center">
+
+                    @foreach (ROPData item in ViewBag.categoriesNonROP)
+                    {
+                        @if (item.material_type_name == type.material_type_name)
+                        {
+                            <div class="col-xl-3 col-lg-6 col-sm-12">
+                                <div class="card bg-gradient-directional-warning">
+                                    <div class="card-content " style="cursor:pointer" onclick="goCate(@item.category_id)">
+                                        <div class="card-body">
+                                            <div class="media d-flex">
+                                                <div class="media-body text-white text-left">
+                                                    <h1 class="text-white">@item.category_name</h1>
+                                                </div>
+                                                <div class="align-self-center">
+                                                    <i class="icon-layers text-white font-large-2 float-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+
+            <div class="row justify-content-md-center">
+                <div class="col-xl-3 col-lg-6 col-sm-12">
+                    <div class="card bg-gradient-directional-danger">
+                        <a asp-action="Index" asp-controller="Home">
+                            <div class="card-content" style="cursor:pointer;">
+                                <div class="card-body">
+                                    <div class="media d-flex">
+                                        <div class="media-body text-white text-left">
+                                            <h1 class="text-white" style="text-align: center">กลับหน้าหลัก</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+@*<div class="modal fade text-left" id="mdSupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title" id="myModalLabel1">กรุณาเลือกคู่ค้า</h4>
+                <button type="button" class="closes" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="xCate" />
+                <div class="controls col-md-10 mx-auto">
+                    <select class="form-control select2-size-sm" data-validation-required-message="กรุณากรอกข้อมูล" id="ddlSupplier"
+                            aria-invalid="true">
+                        <option value="">เลือกคู่ค้า</option>
+                    </select>
+                    <div class="help-block"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success btn-lg" onclick="goRM()">เลือก</button>
+                <button type="button" class="btn grey btn-outline-secondary btn-lg" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div class="modal fade text-left" id="mdSupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title" id="myModalLabel1">กรุณาเลือกคู่ค้า</h4>
+                <button type="button" class="closes" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="xCate" />
+
+                <div class="row justify-content-md-center" id="ddlSupplier">
+                </div>
+
+            </div>
+            @* <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success btn-lg" onclick="goRM()">เลือก</button>
+            <button type="button" class="btn grey btn-outline-secondary btn-lg" data-dismiss="modal">ปิด</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            var _popupRegistermessage = "@TempData["PopupRegister"]";
+            if (_popupRegistermessage.length > 0 && _popupRegistermessage != "" && _popupRegistermessage != undefined) {
+
+
+                Swal.fire({
+                    type: 'info',
+                    title: `ข้อมูลแนะนำ`,
+                    html: _popupRegistermessage,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'รับทราบ',
+                    confirmButtonClass: 'btn btn-primary',
+                    buttonsStyling: false,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.value) {
+                        "@TempData.Remove("PopupRegister")";
+                        //setTimeout(
+                        //    function () {
+                        //        window.location = window.location.origin + "/Registration/Category";
+                        //    }, 5000
+                        //);
+                    }
+                })
+                "@TempData.Remove("PopupRegister")";
+            }
+
+        });
+
+        //function goCate(cate_id) {
+        //    var data = cate_id;
+        //    $("#xCate").val(cate_id);
+        //    $.ajax({
+        //        cache: false,
+        //        async: true,
+        //        type: "POST",
+        //        url: "@Url.Action("GetSupplierData", "Registration")",
+        //        data: { category_id: data },
+        //        success: function (data) {
+
+        //            var store = data.message;
+        //            $("#ddlSupplier").empty();
+        //            for (var i = 0; i < store.length; ++i) {
+        //                //debugger
+        //                var o = new Option(store[i].id, store[i].id);
+        //                $(o).html(store[i].name);
+        //                $("#ddlSupplier").append(o);
+        //            }
+        //            $('.select2-size-sm').select2({
+        //                dropdownAutoWidth: true,
+        //                width: '100%',
+
+        //            });
+        //            $("#mdSupplier").modal("show")
+
+        //            //setTimeout(function () {
+        //            //    $('select').select2('open');
+        //            //}, 500);
+
+
+        //        },
+        //        error: function (err) {
+
+        //        },
+        //        complete: function (data) {
+
+        //        }
+        //    });
+        //    //window.location = '@Url.Action("Calculate","Registration")?Cate=' + cate_id;
+        //}
+
+        //function goRM() {
+        //    window.location = '@Url.Action("Calculate","Registration")?Cate=' + $("#xCate").val() + "&Vendor=" + $("#ddlSupplier option:selected").val();
+        //}
+
+        function goCate(cate_id) {
+            var data = cate_id;
+            $("#xCate").val(cate_id);
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: "@Url.Action("GetSupplierData", "Registration")",
+                data: { category_id: data },
+                success: function (data) {
+
+                    var store = data.message;
+                    $("#ddlSupplier").empty();
+
+                    for (var i = 0; i < store.length; ++i) {
+                        //debugger
+                        //var o = new Option(store[i].id, store[i].id);
+                        //$(o).html(store[i].name);
+                        var _vendor_box = `<div class="col-xl-6 col-lg-6 col-sm-12">
+                                                        <div class="card bg-gradient-directional-success">
+                                                            <a onclick="goRM(${store[i].id})">
+                                                                <div class="card-content" style="cursor:pointer;">
+                                                                    <div class="card-body">
+                                                                        <div class="media d-flex">
+                                                                            <div class="media-body text-white text-left">
+                                                                                    <h1 class="text-white" style="text-align: center">${store[i].name}</h1>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>`
+
+                        $("#ddlSupplier").append(_vendor_box);
+
+                    }
+
+                    $("#mdSupplier").modal("show")
+
+                },
+                error: function (err) {
+
+                },
+                complete: function (data) {
+
+                }
+            });
+            //window.location = '@Url.Action("Calculate","Registration")?Cate=' + cate_id;
+        }
+
+        function goRM(vendor_id) {
+            window.location = '@Url.Action("Calculate","Registration")?Cate=' + $("#xCate").val() + "&Vendor=" + vendor_id;
+        }
+    </script>
+}

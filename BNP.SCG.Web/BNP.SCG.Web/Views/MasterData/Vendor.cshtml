@@ -1,0 +1,104 @@
+@model BNP.SCG.Web.Models.Vendor
+
+<!-- BEGIN: Content-->
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body"><!-- Vendors list start -->
+            <section class="Vendors-list-wrapper">
+                <div class="Vendors-list-filter px-1">
+                </div>
+                <div class="Vendors-list-table">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <!-- datatable start -->
+                                <div class="table-responsive">
+                                    <table id="myTable" class="table table-hover bg-darken-4">
+                                        <thead>
+                                            <tr class="bg-dark bg-lighten-1 white">
+                                                <th>รหัสคู่ค้า</th>
+                                                <th>ชื่อคู่ค้า</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Vendor item in ViewBag.vendors)
+                                            {
+                                                <tr>
+                                                    <td>@item.code</td>
+                                                    <td>@item.name</td>
+                                                    <td>
+                                                        <a asp-action="FormVendor" asp-controller="MasterData"
+                                                        asp-route-id="@item.id" class="info edit mr-1"><i
+                                                            class="la la-pencil"></i></a>
+                                                        <a class="danger delete mr-1"
+                                                        onclick="DeleteVendor('@item.id', '@item.name')"><i
+                                                            class="la la-trash-o"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- datatable ends -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Vendors list ends -->
+        </div>
+    </div>
+</div>
+<!-- END: Content-->
+
+@section Scripts {
+<script>
+
+    $(function () {
+        $("#myTable").DataTable({
+            dom: "Bfrtip",
+            buttons: [{
+                text: "เพิ่มคู่ค้า",
+                className: "btn btn-success btn-sm",
+                action: function () {
+                    window.location.href = '@Url.Content("~/MasterData/FormVendor/0")';
+                },
+            }, "copy", "csv", "excel"]
+        }), $(".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel").addClass("btn btn-primary btn-sm")
+
+    });
+
+    function DeleteVendor(id, name) {
+        Swal.fire({
+            title: `คุณต้องการลบคู่ค้า ${name}?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ยืนยัน!',
+            confirmButtonClass: 'btn btn-primary',
+            cancelButtonClass: 'btn btn-danger ml-1',
+            cancelButtonText: 'ยกเลิก',
+            buttonsStyling: false,
+        }).then((result) => {
+            if (result.value) {
+                $.post('@Url.Action("DeleteVendor", "MasterData")', { id: id }, function (data) {
+                    if (data.result.isCompleted) {
+                        toastr.success(`ลบคู่ค้า ${name} สำเร็จ`);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        toastr.error(data.result.message[0]);
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+}

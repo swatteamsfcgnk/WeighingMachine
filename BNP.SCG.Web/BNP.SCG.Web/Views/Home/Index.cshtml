@@ -1,0 +1,79 @@
+﻿@using System.Security.Claims;
+@model List<ROPData>
+@{
+    //var _rop = Model.Where(w => w.is_rop).ToList();
+    //var _nonrop = Model.Where(w => !w.is_rop).ToList();
+    //var _categories = Model.Where(w => !w.is_rop).ToList();
+
+    var _userRole = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c =>
+        c.Value).FirstOrDefault();
+}
+<style>
+
+    .dropdown-menu {
+        z-index: 2;
+    }
+
+    .card {
+        z-index: 1;
+    }
+
+</style>
+
+<div class="content-overlay"></div>
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body">
+        <section id="html5">
+            <div class="alert alert-info text-center" role="alert">
+                <strong>ประเภทการลงทะเบียน</strong>
+            </div>
+
+            <section id="hover-effects" class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body my-gallery" itemscope="" itemtype="http://schema.org/ImageGallery">
+                        <div class="grid-hover row" style="margin-left: auto; margin-right: auto; width: 60%">
+                            @if (_userRole != "customer")
+                            {
+                                <div class="col-lg-6 col-12">
+                                <figure class="effect-lily" style="float: right;">
+                                    <img src="~/app-assets/images/SCG-register-bg.jpg" alt="img1">
+                                    <figcaption>
+                                        <div>
+                                            <h2 style="background-color: black; text-align:center; font-size: 30px"><span>ลงทะเบียนโหลดวัตถุดิบ</span></h2>
+                                        </div>
+                                        <a asp-action="Category" asp-controller="Registration"></a>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            }
+                            
+                              @if (_userRole != "vendor")
+                            {
+                                <div class="col-lg-6 col-12">
+                                    <figure class="effect-lily" style="float: left;">
+                                        <img src="~/app-assets/images/SCG-register-bg.jpg" alt="img1">
+                                        <figcaption>
+                                            <div>
+                                                <h2 style="background-color: black; text-align:center; font-size: 30px"><span>ลงทะเบียนลูกค้า</span></h2>
+                                            </div>
+                                            <a asp-action="Index" asp-controller="Customer"></a>
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!--/ Image grid -->
+            </section>
+
+
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    
+}

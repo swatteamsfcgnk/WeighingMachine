@@ -1,0 +1,98 @@
+﻿@model Customer
+
+<style>
+    .modal-footer {
+        display: block !important;
+    }
+
+    /*
+            html body .content .content-wrapper {
+                padding: 0.1rem .1rem 0;
+            }*/
+</style>
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card border-info">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post">
+                                        <div class="form-body  font-large-1">
+                                            <h5 class="form-section font-large-1">
+                                                <i class="ft-monitor"></i> ลงทะเบียน <span class="text-info">ลูกค้า</span>
+                                                <span class="text-danger pull-right">@Model.error_message</span>
+                                            </h5>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control">
+                                                    ทะเบียนรถ <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input asp-for="car_license" type="text" class="form-control"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           data-validation-regex-regex="([ก-ฮ0-9]+$)"
+                                                           data-validation-regex-message="เฉพาะตัวเลขและภาษาไทยติดกันเท่านั้น ห้ามเว้นวรรคหรือขีด"
+                                                           aria-invalid="true" placeholder="กรอกข้อมูลติดกันโดยไม่มีเว้นวรรคหรือขีด เช่น กท1234, 87453">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    ชื่อ-นามสกุล
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                           asp-for="name"
+                                                           data-validation-required-message="กรุณากรอกข้อมูล"
+                                                           aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-4 label-control" for="projectinput1">
+                                                    เบอร์โทรศัพท์
+                                                </label>
+                                                <div class="controls col-md-8 mx-auto">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                           asp-for="phone">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-12 text-right">
+                                                    <button type="submit" class="btn btn-success btn-lg">
+                                                        <i class="la la-check-square-o"></i> บันทึก
+                                                    </button>
+
+                                                    <a asp-action="Index" asp-controller="Home" class="btn btn-danger btn-lg">
+                                                        <i class="ft-x"></i> ยกเลิก
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    
+}

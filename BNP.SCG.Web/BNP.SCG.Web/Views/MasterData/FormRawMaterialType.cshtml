@@ -1,0 +1,71 @@
+@model BNP.SCG.Web.Models.RawMaterialType
+
+<div class="app-content container center-layout mt-2">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+
+            <!-- Basic form layout section start -->
+            <section id="basic-form-layouts">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form id="myForm" method="post">
+                                        <div class="form-body">
+                                            <h4 class="form-section"><i class="ft-MaterialType"></i>
+                                                ข้อมูลประเภทวัตถุดิบ
+                                            </h4>
+                                            <div class="form-group">
+                                                <label>ประเภทวัตถุดิบ <span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <input asp-for="name" type="text" class="form-control mb-1"
+                                                        data-validation-required-message="กรุณากรอกข้อมูล"
+                                                        aria-invalid="true">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row skin skin-flat">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <fieldset>
+                                                        <input type="checkbox" asp-for="is_rop">
+                                                        <label for="input-15">&nbsp; ใช้งาน ROP</label>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="la la-check-square-o"></i> บันทึก
+                                            </button>
+                                            <a asp-action="RawMaterialType" asp-controller="MasterData"
+                                                class="btn btn-danger mr-1">
+                                                <i class="ft-x"></i> ยกเลิก
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+    $(function () {
+        //Flat Checkbox & Radio
+        $('.skin-flat input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+    });
+</script>
+}
