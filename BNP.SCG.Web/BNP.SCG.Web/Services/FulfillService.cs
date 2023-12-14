@@ -684,5 +684,21 @@ namespace BNP.SCG.Web.Services
             return result;
         }
 
+        public async Task<bool> PrintFinish(PrintFinishModel model)
+        {
+            var res = false;
+            try {
+                using var conn = await _db.CreateSqlConnectionAsync();
+                string sql = $@"insert into tb_print_finish 
+                (car_license,is_print,create_date,diff) 
+                values ('{model.car_license}',0,getdate(),'{model.diff}')";
+                await conn.ExecuteAsync(sql);
+                res = true;
+            } catch (Exception ex) {
+                res = false;
+            }
+            return res;
+        }
+
     }
 }

@@ -121,6 +121,13 @@ namespace BNP.SCG.Web.Controllers
                 }
                 else
                 {
+                    // Print Finish
+                    var printFinish = new PrintFinishModel()
+                    {
+                        car_license = model.car_license,
+                        diff = model.weight_diff
+                    };
+                    _serviceFulfill.PrintFinish(printFinish);
                     TempData["Message"] = "บันทึกข้อมูลการชั่งเบาเรียบร้อย";
                     TempData["PopupWeightOut"] = _serviceInfo.GetWeightOutMessage().Result;
                     TempData["FulfillIdWeihtOut"] = Convert.ToInt32(model.id);
@@ -140,6 +147,13 @@ namespace BNP.SCG.Web.Controllers
                 }
                 else
                 {
+                    // Print Finish
+                    var printFinish = new PrintFinishModel()
+                    {
+                        car_license = model.car_license,
+                        diff = model.weight_diff
+                    };
+                    _serviceFulfill.PrintFinish(printFinish);
                     TempData["Message"] = "บันทึกข้อมูลการชั่งเบาเรียบร้อย";
                     TempData["PopupWeightOut"] = _serviceInfo.GetWeightOutMessage().Result;
                     TempData["FulfillIdWeihtOut"] = Convert.ToInt32(model.id);
