@@ -574,7 +574,7 @@ namespace BNP.SCG.Web.Services
                 mp_rop.rop,
                 mp_rop.location_id,
                 mp_rop.material_id,
-                mp_rop.rop / mp_rop.usge_qty AS cal,
+                tb_silo.value / mp_rop.usge_qty AS cal,
                 tb_material.category_id
             FROM mp_rop
             INNER JOIN tb_location ON mp_rop.location_id = tb_location.id
