@@ -687,14 +687,21 @@ namespace BNP.SCG.Web.Services
         public async Task<bool> PrintFinish(PrintFinishModel model)
         {
             var res = false;
-            try {
+            try
+            {
                 using var conn = await _db.CreateSqlConnectionAsync();
                 string sql = $@"insert into tb_print_finish 
-                (car_license,is_print,create_date,diff) 
-                values ('{model.car_license}',0,getdate(),'{model.diff}')";
+                 (car_license,is_print,create_date,diff,document_no,supplier_name,raw_material_name,location_name,weight_register,weight_in,weight_out,percentage_diff,weight_in_at,weight_out_at) 
+                values ('{model.car_license}',0,getdate(),'{model.diff}','{model.document_no}','{model.supplier_name}','{model.raw_material_name}','{model.location_name}','{model.weight_register}','{model.weight_in}','{model.weight_out}','{model.percentage_diff}','{model.weight_in_at}','{model.weight_out_at}')";
+
+                //string sql = $@"insert into tb_print_finish 
+                //(car_license,is_print,create_date,diff) 
+                //values ('{model.car_license}',0,getdate(),'{model.diff}')";
                 await conn.ExecuteAsync(sql);
                 res = true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 res = false;
             }
             return res;

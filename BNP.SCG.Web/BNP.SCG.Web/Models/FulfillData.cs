@@ -11,7 +11,7 @@
         public long supplier_id { get; set; }
         public string supplier_name { get; set; } = string.Empty;
         public long raw_material_id { get; set; }
-        public string raw_material_name { get; set; } = string.Empty;
+        public string raw_material_name { get; set; }
         public string document_no { get; set; } = string.Empty;
         public decimal weight_in { get; set; }
         public decimal weight_out { get; set; }

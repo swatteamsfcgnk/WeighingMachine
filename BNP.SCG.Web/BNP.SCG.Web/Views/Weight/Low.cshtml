@@ -465,7 +465,7 @@
                             }
                             upDateDiff();
                             getDocStatInThai()
-                            OpenGate("gate2", "SCAN_GATE_2", _data.id, null);
+                            //OpenGate("gate2", "SCAN_GATE_2", _data.id, null);
 
                         } else {
                             var _data = data.model;
@@ -476,11 +476,11 @@
                             $("#customer_name").val(_data.name);
                             $("#customer_phone").val(_data.phone);
 
-                            OpenGate("gate2", "SCAN_GATE_2", null, _data.id);
-                            _x = setInterval(function () {
-                                OpenGate("gate1", "SCAN_GATE_1", null, _data.id);
-                                Reload();
-                            }, 10000);
+                            //OpenGate("gate2", "SCAN_GATE_2", null, _data.id);
+                            //_x = setInterval(function () {
+                            //    OpenGate("gate1", "SCAN_GATE_1", null, _data.id);
+                            //    Reload();
+                            //}, 10000);
                         }
                     } else {
                         $("#txtScan").select();

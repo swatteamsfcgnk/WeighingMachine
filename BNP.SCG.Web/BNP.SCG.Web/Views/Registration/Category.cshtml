@@ -68,7 +68,7 @@
 
             @foreach (ROPData type in ViewBag.categoriesNonROPDistinct)
             {
-                <h1 class="d-flex text-warning bg-light text-bold-600 justify-content-center" id="x">@type.material_type_name (ไม่ใช้งาน ROP)</h1>
+                <h1 class="d-flex text-dark bg-light text-bold-600 justify-content-center" id="x">@type.material_type_name (ไม่ใช้งาน ROP)</h1>
                 <div class="row justify-content-md-center">
 
                     @foreach (ROPData item in ViewBag.categoriesNonROP)
@@ -76,7 +76,7 @@
                         @if (item.material_type_name == type.material_type_name)
                         {
                             <div class="col-xl-3 col-lg-6 col-sm-12">
-                                <div class="card bg-gradient-directional-warning">
+                                <div class="card bg-gradient-directional-secondary">
                                     <div class="card-content " style="cursor:pointer" onclick="goCate(@item.category_id)">
                                         <div class="card-body">
                                             <div class="media d-flex">

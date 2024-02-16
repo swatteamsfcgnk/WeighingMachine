@@ -107,6 +107,7 @@ namespace BNP.SCG.Web.Controllers
             model.weight_diff = model.weight_in - model.weight_out;
             model.weight_out_at = DateTime.Now; model.weight_out_by = first_name;
             model.date_out = DateTime.Now;
+       
 
             if (!model.second_load)
             {
@@ -122,10 +123,22 @@ namespace BNP.SCG.Web.Controllers
                 else
                 {
                     // Print Finish
+                    var newmdel = _serviceFulfill.GetById(model.id).Result;
                     var printFinish = new PrintFinishModel()
                     {
-                        car_license = model.car_license,
-                        diff = model.weight_diff
+                        car_license = newmdel.car_license,
+                        diff = newmdel.weight_diff,
+                        document_no = newmdel.document_no,
+                        supplier_name = newmdel.supplier_name,
+                        raw_material_name = newmdel.raw_material_name,
+                        location_name = newmdel.location_name,
+                        weight_register = newmdel.weight_register,
+                        weight_in = newmdel.weight_in,
+                        weight_out = newmdel.weight_out,
+                        percentage_diff = newmdel.percentage_diff,
+                        weight_in_at = newmdel.date_in,
+                        weight_out_at = newmdel.date_out,
+
                     };
                     _serviceFulfill.PrintFinish(printFinish);
                     TempData["Message"] = "บันทึกข้อมูลการชั่งเบาเรียบร้อย";
@@ -148,10 +161,22 @@ namespace BNP.SCG.Web.Controllers
                 else
                 {
                     // Print Finish
+                    var newmdel = _serviceFulfill.GetById(model.id).Result;
                     var printFinish = new PrintFinishModel()
                     {
-                        car_license = model.car_license,
-                        diff = model.weight_diff
+                        car_license = newmdel.car_license,
+                        diff = newmdel.weight_diff,
+                        document_no = newmdel.document_no,
+                        supplier_name = newmdel.supplier_name,
+                        raw_material_name = newmdel.raw_material_name,
+                        location_name = newmdel.location_name,
+                        weight_register = newmdel.weight_register,
+                        weight_in = newmdel.weight_in,
+                        weight_out = newmdel.weight_out,
+                        percentage_diff = newmdel.percentage_diff,
+                        weight_in_at = newmdel.date_in,
+                        weight_out_at = newmdel.date_out,
+
                     };
                     _serviceFulfill.PrintFinish(printFinish);
                     TempData["Message"] = "บันทึกข้อมูลการชั่งเบาเรียบร้อย";
@@ -254,10 +279,14 @@ namespace BNP.SCG.Web.Controllers
                 fulfill_id = fulfill_id,
                 customer_id = customer_id
             };
-
-            var _x = _serviceGate.OpenGate(_gate).Result;
-            Thread.Sleep(5000);
-            _x = _serviceGate.CloseGate(_gate).Result;
+            // Add 15 Feb cancle Scan gate 1 and 2 to sql gate control
+            if (_gate.process != "SCAN_GATE_1" || _gate.process != "SCAN_GATE_2")
+            {
+                var _x = _serviceGate.OpenGate(_gate).Result;
+                Thread.Sleep(10000);
+                _x = _serviceGate.CloseGate(_gate).Result;
+            }
+          
         }
 
         [HttpPost]
