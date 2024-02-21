@@ -104,7 +104,7 @@ namespace BNP.SCG.Web.Controllers
         public IActionResult Low(FulfillData model)
         {
             var first_name = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == "UserFirstName").Select(c => c.Value).FirstOrDefault();
-            model.weight_diff = model.weight_in - model.weight_out;
+            model.weight_diff = model.weight_in - model.weight_out; 
             model.weight_out_at = DateTime.Now; model.weight_out_by = first_name;
             model.date_out = DateTime.Now;
        
@@ -138,6 +138,7 @@ namespace BNP.SCG.Web.Controllers
                         percentage_diff = newmdel.percentage_diff,
                         weight_in_at = newmdel.date_in,
                         weight_out_at = newmdel.date_out,
+                        Ticket_Diff = newmdel.weight_register - newmdel.weight_diff,
 
                     };
                     _serviceFulfill.PrintFinish(printFinish);
@@ -176,6 +177,7 @@ namespace BNP.SCG.Web.Controllers
                         percentage_diff = newmdel.percentage_diff,
                         weight_in_at = newmdel.date_in,
                         weight_out_at = newmdel.date_out,
+                        Ticket_Diff = newmdel.weight_register - newmdel.weight_diff,
 
                     };
                     _serviceFulfill.PrintFinish(printFinish);

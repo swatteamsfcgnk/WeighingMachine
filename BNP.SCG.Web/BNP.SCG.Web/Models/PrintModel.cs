@@ -23,5 +23,6 @@ namespace BNP.SCG.Web.Models
         public decimal percentage_diff { get; set; }
         public DateTime? weight_in_at { get; set; }
         public DateTime? weight_out_at { get; set; }
+        public decimal Ticket_Diff { get; set; }
     }
 }

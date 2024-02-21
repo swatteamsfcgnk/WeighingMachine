@@ -54,13 +54,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @{
-                                                int ii = 1;
-                                            }
+                                           @* @{
+                                                //int ii = 1;
+                                            }*@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>@ii.</td>
+                                                    @*<td>@ii.</td>*@
+                                                    <td>@item.id</td>
                                                     <td>@item.date_in.ToString("dd/MM/yyyy")</td>
                                                     <td>@item.date_in.ToString("HH:mm:ss")</td>
                                                     <td>@(item.date_out.HasValue ? item.date_out.Value.ToString("dd/MM/yyyy") : "-")</td>
@@ -107,7 +108,7 @@
                                                         }
                                                     </td>
                                                 </tr>
-                                                ii++;
+                                               @* ii++;*@
                                             }
                                         </tbody>
                                     </table>
