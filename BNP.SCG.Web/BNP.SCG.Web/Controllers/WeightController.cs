@@ -189,6 +189,35 @@ namespace BNP.SCG.Web.Controllers
             }
         }
 
+       
+        [HttpPost]
+        // Re - printing Report Registration Raw Material Loading
+        public IActionResult Reprinting(int id)
+        {
+            // ดึงข้อมูลที่ต้องการปริ้น
+            var model = _serviceFulfill.GetById(id).Result;
+
+            var printFinish = new PrintFinishModel()
+            {
+                car_license = model.car_license,
+                diff = model.weight_diff,
+                document_no = model.document_no,
+                supplier_name = model.supplier_name,
+                raw_material_name = model.raw_material_name,
+                location_name = model.location_name,
+                weight_register = model.weight_register,
+                weight_in = model.weight_in,
+                weight_out = model.weight_out,
+                percentage_diff = model.percentage_diff,
+                weight_in_at = model.date_in,
+                weight_out_at = model.date_out,
+                Ticket_Diff = model.weight_register - model.weight_diff,
+            };
+            _serviceFulfill.PrintFinish(printFinish);
+
+            return Json(new { status = "success" });
+        }
+
         [HttpPost]
         public virtual ActionResult getDataByQR(string qr, string process)
         {

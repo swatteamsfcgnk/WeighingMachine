@@ -553,6 +553,7 @@ namespace BNP.SCG.Web.Services
                     SET
                         [name] = '{model.name}'
                         ,[updated_by] = '{model.updated_by}'
+                        ,[Status_sw] = '{model.Status_sw}'
                         ,[updated_at] = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", new CultureInfo("en-US"))}'
                     WHERE id = '{model.id}'";
 
@@ -618,7 +619,7 @@ namespace BNP.SCG.Web.Services
         public async Task<List<ROPData>> GetAllMaterialWithROP(long vendor_id)
         {
             using var conn = await _db.CreateSqlConnectionAsync();
-            string sql = $@"SELECT mp_rop.id, tb_material.name AS material_name, tb_material.raw_material_type_id, tb_material.is_active, tb_material.created_by, tb_material.created_at, tb_material.updated_by, tb_material.updated_at, tb_material_type.is_rop, tb_location.name AS location_name, mp_rop.material_id, mp_rop.location_id, tb_material.category_id, tb_material_vendor_list_id.vendor_id
+            string sql = $@"SELECT mp_rop.id, tb_material.name AS material_name, tb_material.raw_material_type_id, tb_material.is_active, tb_material.created_by, tb_material.created_at, tb_material.updated_by, tb_material.updated_at, tb_material_type.is_rop, tb_location.name AS location_name, mp_rop.material_id, mp_rop.location_id, tb_material.category_id, tb_material_vendor_list_id.vendor_id,tb_location.Status_sw
                 FROM tb_material 
                 INNER JOIN tb_material_type ON tb_material.raw_material_type_id = tb_material_type.id
                 INNER JOIN mp_rop ON tb_material.id = mp_rop.material_id
@@ -699,8 +700,7 @@ namespace BNP.SCG.Web.Services
                     UPDATE [dbo].[tb_category]
                     SET
                         [name] = '{model.name}'
-                        ,[fix_percentage_diff] = {model.fix_percentage_diff}
-                        ,[updated_by] = '{model.updated_by}'
+                        ,[fix_percentage_diff] = {model.fix_percentage_diff}      
                         ,[updated_at] = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", new CultureInfo("en-US"))}'
                     WHERE id = '{model.id}'";
 

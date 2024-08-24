@@ -14,6 +14,7 @@ namespace BNP.SCG.Web.Models
         public DateTime created_at { get; set; }
         public string? updated_by { get; set; }
         public DateTime updated_at { get; set; }
+        public string? Status_sw { get; set; }
 
     }
 }

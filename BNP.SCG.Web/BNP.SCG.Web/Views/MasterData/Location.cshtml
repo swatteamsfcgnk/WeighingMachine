@@ -21,6 +21,7 @@
                                             <tr class="bg-dark bg-lighten-1 white">
                                                 <th>สถานที่</th>
                                                 <th>Action</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -35,6 +36,9 @@
                                                         <a class="danger delete mr-1"
                                                         onclick="DeleteLocation('@item.id', '@item.name')"><i
                                                             class="la la-trash-o"></i></a>
+                                                    </td>
+                                                    <td align="right" class="@(item.Status_sw == "ON" ? "text-success" : "text-danger")">
+                                                        @item.Status_sw
                                                     </td>
                                                 </tr>
                                             }
@@ -97,6 +101,14 @@
                 }
             });
         }
-
    </script>
+    <style>
+        .text-success {
+            color: #228b22 !important;
+        }
+
+        .text-danger {
+            color: #dc143c !important;
+        }
+    </style>
 }

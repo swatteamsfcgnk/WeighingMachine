@@ -26,13 +26,24 @@
                                                     <div class="help-block"></div>
                                                 </div>
                                             </div>
+                                            <div class="controls">
+                                                <input asp-for="Status_sw" type="text" readonly id="SW_input" class="form-control mb-1"
+                                                       data-validation-required-message="กรุณากรอกข้อมูล"
+                                                       aria-invalid="true">
+                                                <div class="help-block"></div>
+                                            </div>
+
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="mySwitch" hidden>
+                                                <label class="custom-control-label" for="mySwitch">เปิด / ปิด สถานที่นี้</label>
+                                            </div>
                                         </div>
 
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-success">
                                                 <i class="la la-check-square-o"></i> บันทึก
                                             </button>
-                                            <a asp-action="Location" asp-controller="MasterData"
+                                            <a asp-action="Location" asp-controller="MasterData" 
                                                 class="btn btn-danger mr-1">
                                                 <i class="ft-x"></i> ยกเลิก
                                             </a>
@@ -48,3 +59,34 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @* Sw_input *@
+    <script>
+        $(document).ready(function () {
+            var initialValue = $('#SW_input').val();
+            if (initialValue == "ON") {
+                $('#mySwitch').prop('checked', true);
+            } else {
+                $('#mySwitch').prop('checked', false);
+            }
+
+            $('#mySwitch').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#SW_input').val("ON");
+                } else {
+                    $('#SW_input').val("OFF");
+                }
+            });
+
+            $('#SW_input').on('input', function () {
+                var inputValue = $(this).val();
+                if (inputValue == "ON") {
+                    $('#mySwitch').prop('checked', true);
+                } else if (inputValue == "OFF") {
+                    $('#mySwitch').prop('checked', false);
+                }
+            });
+        });
+    </script>
+}

@@ -21,6 +21,7 @@
                                     <table class="table table-striped table-bordered dataex-html5-export">
                                         <thead>
                                             <tr>
+                                                <th align="center">Re-Print</th>
                                                 <th>ลำดับ</th>
                                                 <th>วันที่เข้า</th>
                                                 <th>เวลาเข้า</th>
@@ -60,6 +61,11 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
+                                                    <td align="center">
+                                                        <button class="btn btn-info" onclick="Reprinting('@item.id', '@item.car_license', '@item.supplier_name', '@item.raw_material_name', '@item.document_no')">
+                                                            <i class="fas fa-print">Re-Print</i>
+                                                        </button>
+                                                    </td>
                                                     @*<td>@ii.</td>*@
                                                     <td>@item.id</td>
                                                     <td>@item.date_in.ToString("dd/MM/yyyy")</td>
@@ -223,6 +229,37 @@
                             }, 2000);
                         } else {
                             toastr.error(data.result.message[0]);
+                        }
+                    });
+                }
+            });
+        }
+        // Re - printing Report Registration Raw Material Loading
+        function Reprinting(id, car_license, supplier_name, raw_material_name, document_no) {
+            Swal.fire({
+                title: `คุณต้องการปริ้นรายการนี้ซ้ำอีกครั้ง`,
+                html: `ประเภทวัตถุดิบ "${raw_material_name}"<br>ชื่อคู่ค้า "${supplier_name}<br> ทะเบียนรถ "${car_license}"<br>เลขที่เอกสาร "${document_no}"`,
+                type: 'primary',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน!',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: 'ยกเลิก',
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.value) {
+
+
+                    $.post('@Url.Action("Reprinting", "Weight")', { id: id }, function (data) {
+                        if (data.status == "success") {
+                            toastr.success("Re_Print สำเร็จค่ะ");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            toastr.error("เกิดข้อผิดพลาดในการพิมพ์");
                         }
                     });
                 }

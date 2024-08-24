@@ -89,6 +89,7 @@
                                 <div class="card-img-overlay overlay-blue-grey bg-lighten-3">
                                     <h4 class="card-title text-white">@item.material_name</h4>
                                     <h5 class=" text-white pull-right text-bold-700">@item.location_name</h5>
+                                    <h5 class=" text-white pull-right text-bold-700" hidden=" @item.Status_sw"> @item.Status_sw</h5>
                                 </div>
                             </div>
                         </div>
@@ -260,4 +261,17 @@
             startFunc();
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.card').each(function () {
+                var status = $(this).find('.card-content h5.text-white.text-bold-700:last').text().trim();
+                if (status === "OFF") {
+                    $(this).hide();
+                }
+            });
+        });
+    </script>
+}
 }
